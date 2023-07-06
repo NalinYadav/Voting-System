@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Voting App</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="../public/styles.css" />
+    <!-- Bootstrap CSS CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <form method="POST" action="/submit">
+      <div class="title">
+        <div class="selected-count">
+          Selected Candidates :&nbsp;<span id="count"> 0</span>
+        </div>
+        <div class="btnDiv">
+          <label class="vid" for="userId">Voting ID:</label>
+          <input
+            class="uid"
+            type="text"
+            id="userId"
+            name="userId"
+            value="null"
+            required
+          />
+          <button class="btnn" id="submitBtn" type="submit">Submit</button>
+        </div>
+      </div>
+      <div class="form">
+        <% images.forEach(function(image,i) { %>
+        <div class="image-container" id="imageContainer_<%= i %>">
+          <img
+            id="image_<%= i %>"
+            src="<%= image.img.src %>"
+            alt="<%= image.img.alt %>"
+          />
+          <input
+            type="checkbox"
+            id="checkbox_<%= i %>"
+            name="id"
+            class="custom-checkbox"
+            value="<%= image.id %>"
+          />
+          <p class="image-name"><%= image.name %></p>
+        </div>
+        <% }) %>
+      </div>
+
+      <div id="passwordModal" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Enter Password</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="input-group">
+                <input
+                  type="password"
+                  id="passwordInput"
+                  class="form-control"
+                  placeholder="Password"
+                />
+              </div>
+              <button
+                id="passwordSubmitBtn"
+                type="button"
+                class="btn btn-primary"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="modal1" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Incorrect selection</h5>
+            </div>
+            <div class="modal-body">
+              <p>कृप्या करके सात उम्मीदवारों का चयन करें</p>
+            </div>
+            <div class="modal-footer">
+              <button
+                id="cls1"
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="modal2" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Confirm Response Change</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <p>क्या आप चयन किए गए उम्मीदवारों में परिवर्तन करना चाहते है?</p>
+              <button
+                id="yesBtn"
+                type="button"
+                class="btn btn-primary modal-button"
+              >
+                Yes
+              </button>
+              <button
+                id="noBtn"
+                type="button"
+                class="btn btn-secondary modal-button"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var imageContainers =
+          document.getElementsByClassName("image-container");
+        var submitBtn = document.getElementById("submitBtn");
+        var countSpan = document.getElementById("count");
+        var selectedImagesCount = 0;
+
+        var modal1 = new bootstrap.Modal(document.getElementById("modal1"));
+        var modal2 = new bootstrap.Modal(document.getElementById("modal2"));
+        var yesBtn = document.getElementById("yesBtn");
+        var noBtn = document.getElementById("noBtn");
+        var cls1 = document.getElementById("cls1");
+        var flag = false;
+
+        var passwordModal = new bootstrap.Modal(
+          document.getElementById("passwordModal"),
+          { backdrop: "static" }
+        );
+        var passwordInput = document.getElementById("passwordInput");
+        var passwordSubmitBtn = document.getElementById("passwordSubmitBtn");
+
+        passwordSubmitBtn.addEventListener("click", function () {
+          var enteredPassword = passwordInput.value;
+
+          var correctPassword = "9999";
+
+          if (enteredPassword === correctPassword) {
+            passwordModal.hide();
+          } else {
+            passwordInput.value = "";
+            passwordInput.focus();
+          }
+        });
+
+        passwordModal.show();
+
+        Array.from(imageContainers).forEach(function (imageContainer, index) {
+          var checkbox = document.getElementById("checkbox_" + index);
+
+          imageContainer.addEventListener("click", function () {
+            imageContainer.classList.toggle("selected");
+            checkbox.checked = !checkbox.checked;
+
+            if (imageContainer.classList.contains("selected")) {
+              selectedImagesCount++;
+            } else {
+              selectedImagesCount--;
+            }
+
+            countSpan.textContent = selectedImagesCount;
+          });
+        });
+        submitBtn.addEventListener("click", function () {
+          if (flag == true) {
+            return;
+          }
+          if (selectedImagesCount !== 7) {
+            modal1.show();
+            event.preventDefault();
+          } else {
+            modal2.show();
+            event.preventDefault();
+          }
+        });
+
+        cls1.addEventListener("click", function () {
+          modal1.hide();
+        });
+
+        yesBtn.addEventListener("click", function () {
+          modal2.hide();
+        });
+
+        noBtn.addEventListener("click", function () {
+          modal2.hide();
+          flag = true;
+          submitBtn.click();
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,108 @@
+body {
+  background: linear-gradient(135deg, #e4eaeb, #ca89e6);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center center;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 25px;
+  background-color: #fff;
+  color: #3498db; /* Set a color that complements the gradient */
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.btnn:hover {
+  background: linear-gradient(135deg, #67f379, #0dac32);
+  color: white;
+}
+
+.btnDiv {
+  padding: 30px;
+}
+
+img {
+  width: 180px;
+  height: 180px;
+  margin: 20px;
+  border-radius: 10%;
+}
+.image-name {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.image-container {
+  display: flex;
+  flex-direction: column;
+  border-width: thin;
+  align-items: center;
+  border-radius: 10%;
+  margin: 10px;
+}
+
+.custom-checkbox {
+  display: none;
+}
+
+.image-container.selected {
+  background: linear-gradient(135deg, #67f379, #0dac32);
+}
+
+input.uid {
+  /* Apply your desired styles here */
+  width: 200px;
+  height: 20px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+  display: none;
+}
+
+input.uid:focus {
+  /* Apply styles when the input field is focused */
+  border-color: #2196f3;
+  outline: none;
+  box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+  display: none;
+}
+
+.vid {
+  font-weight: bold;
+  display: none;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.selected-count {
+  font-weight: bold;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 30px;
+}
+.input-group {
+  margin-bottom: 15px;
+}
